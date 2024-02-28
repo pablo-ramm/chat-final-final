@@ -38,10 +38,11 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   compartment_id     = var.ociCompartmentOcid
   kubernetes_version = "v1.28.2"
   name               = "Pool"
-  #  node_shape="VM.Standard2.4"
-  #  node_shape         = "VM.Standard.B2.1"
-  node_shape         = "VM.Standard.E2.1"
-  #  node_shape         = "VM.Standard2.2"
+  node_shape         = "VM.Standard.A1.Flex"
+  node_shape_config {
+    memory_in_gbs = 6
+    ocpus = 2
+  }
   #subnet_ids         = [oci_core_subnet.nodePool_Subnet_1.id]
   #Optional
   node_config_details {
