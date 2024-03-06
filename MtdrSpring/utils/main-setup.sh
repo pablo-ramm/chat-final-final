@@ -172,6 +172,7 @@ while ! state_done DOCKER_REGISTRY; do
         cat $MTDRWORKSHOP_LOG/docker_registry_err
         exit
       fi
+      sleep 5
     fi
   else
     read -s -r -p "Please generate an Auth Token and enter the value: " TOKEN
