@@ -11,4 +11,8 @@ fi
 
 $MTDRWORKSHOP_LOCATION/utils/main-destroy.sh
 
-cd
+deleteDir=toDelete_$(date +%Y%m%d_%H%M%S)
+mkdir $deleteDir
+mv state $deleteDir
+mv tls $deleteDir
+mv wallet $deleteDir
