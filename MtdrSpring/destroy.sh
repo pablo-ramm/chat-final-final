@@ -17,3 +17,11 @@ mv state $deleteDir
 mv tls $deleteDir
 mv wallet $deleteDir
 mv log $deleteDir
+
+echo 'Recommendations:'
+echo '  1. Manually rename compartment'
+echo '  2. Manually check/remove OKE cluster from compartment'
+echo '  3. Manually check/remove Auth Tokens'
+echo '  4. Manually check/remove Buckets from compartment'
+echo '  5. Manually check/remove Compute Instances from compartment'
+echo '  6. Manually check/remove ATP DB from compartment'
