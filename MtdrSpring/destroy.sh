@@ -16,3 +16,4 @@ mkdir $deleteDir
 mv state $deleteDir
 mv tls $deleteDir
 mv wallet $deleteDir
+mv log $deleteDir
