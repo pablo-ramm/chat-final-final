@@ -96,19 +96,6 @@ steps:
       fi
       echo "Docker push succeeded."
 
-  - type: Command
-    name: Clean Up Local Docker Image
-    shell: bash
-    timeoutInSeconds: 300
-    command: |
-      echo "Cleaning up local Docker image..."
-      docker rmi "$IMAGE"
-      if [ $? -ne 0 ]; then
-        echo "Docker rmi failed!"
-        exit 1
-      fi
-      echo "Local Docker image removed."
-
 outputArtifacts:
   - name: build-artifacts
     type: BINARY
