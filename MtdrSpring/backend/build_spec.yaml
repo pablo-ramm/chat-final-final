@@ -9,6 +9,7 @@ env:
     IMAGE_NAME: "todolistapp-springboot"
     IMAGE_VERSION: "0.1"
     DOCKER_REGISTRY: "<region-code>.ocir.io/mytenancy/myrepo"
+    JAVA_HOME: "/usr/lib64/graalvm/graalvm22-ee-java17"
   exportedVariables:
     - IMAGE
 
@@ -24,6 +25,21 @@ steps:
       fi
       export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
       echo "Environment variables set: IMAGE=${IMAGE}"
+      export PATH=$JAVA_HOME/bin:$PATH
+      echo "PATH set to: $PATH"
+      
+  - type: Command
+    name: Install GraalVM Enterprise 22.x Native Image for Java17
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Installing GraalVM Enterprise..."
+      yum -y install graalvm22-ee-17-native-image
+      if [ $? -ne 0 ]; then
+        echo "GraalVM installation failed!"
+        exit 1
+      fi
+      echo "GraalVM installation succeeded."
 
   - type: Command
     name: Build Application
