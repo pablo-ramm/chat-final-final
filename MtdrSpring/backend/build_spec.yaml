@@ -1,44 +1,81 @@
-version: 0.2
-phases:
-  install:
-    commands:
-      - echo "Installing dependencies..."
-      - sudo yum install -y maven docker
-  pre_build:
-    commands:
-      - echo "Setting up environment variables..."
-      - export IMAGE_NAME=todolistapp-springboot
-      - export IMAGE_VERSION=0.1
-      - |
-        if [ -z "$DOCKER_REGISTRY" ]; then
-          echo "DOCKER_REGISTRY not set. Will get it with state_get"
-          export DOCKER_REGISTRY=$(state_get DOCKER_REGISTRY)
-        fi
-      - |
-        if [ -z "$DOCKER_REGISTRY" ]; then
-          echo "Error: DOCKER_REGISTRY env variable needs to be set!"
-          exit 1
-        fi
-      - export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
-  build:
-    commands:
-      - echo "Building the application with Maven..."
-      - mvn clean package spring-boot:repackage
-      - echo "Building Docker image..."
-      - docker build -f Dockerfile -t $IMAGE .
-  post_build:
-    commands:
-      - echo "Pushing Docker image to registry..."
-      - docker push $IMAGE
-      - |
-        if [ $? -eq 0 ]; then
-          echo "Removing local Docker image..."
-          docker rmi "$IMAGE"
-        fi
-artifacts:
-  files:
-    - target/**
-    - Dockerfile
-cache:
-  paths:
-    - '/root/.m2/**/*'
+version: 0.1
+component: build
+timeoutInSeconds: 10000
+shell: bash
+failImmediatelyOnError: true
+
+env:
+  variables:
+    IMAGE_NAME: "todolistapp-springboot"
+    IMAGE_VERSION: "0.1"
+  exportedVariables:
+    - IMAGE
+
+steps:
+  - type: Command
+    name: Set Environment Variables
+    shell: bash
+    timeoutInSeconds: 300
+    command: |
+      if [ -z "$DOCKER_REGISTRY" ]; then
+        echo "DOCKER_REGISTRY not set. Will get it with state_get"
+        export DOCKER_REGISTRY=$(state_get DOCKER_REGISTRY)
+      fi
+      if [ -z "$DOCKER_REGISTRY" ]; then
+        echo "Error: DOCKER_REGISTRY env variable needs to be set!"
+        exit 1
+      fi
+      export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+
+  - type: Command
+    name: Build Application
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Building the application with Maven..."
+      mvn clean package spring-boot:repackage
+
+  - type: Command
+    name: Build Docker Image
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Building Docker image..."
+      docker build -f Dockerfile -t $IMAGE .
+
+  - type: Command
+    name: Push Docker Image
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Pushing Docker image to registry..."
+      docker push $IMAGE
+    onFailure:
+      - type: Command
+        shell: bash
+        command: |
+          echo "Failed to push Docker image."
+
+  - type: Command
+    name: Clean Up Local Docker Image
+    shell: bash
+    timeoutInSeconds: 300
+    command: |
+      if [ $? -eq 0 ]; then
+        echo "Removing local Docker image..."
+        docker rmi "$IMAGE"
+      fi
+
+outputArtifacts:
+  - name: build-artifacts
+    type: BINARY
+    location: target/
+
+  - name: docker-image
+    type: DOCKER_IMAGE
+    location: ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+
+inputArtifacts:
+  - name: source-code
+    type: GIT_REPOSITORY
+    location: ./
