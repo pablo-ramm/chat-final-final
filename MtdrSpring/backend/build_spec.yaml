@@ -8,7 +8,7 @@ env:
   variables:
     IMAGE_NAME: "todolistapp-springboot"
     IMAGE_VERSION: "0.1"
-    DOCKER_REGISTRY: "mx-queretaro-1.ocir.io/axs2pxpd649r/reacttodo/rkihw"  # Aquí defines tu registro de Docker
+    DOCKER_REGISTRY: "<region-code>.ocir.io/mytenancy/myrepo"
   exportedVariables:
     - IMAGE
 
@@ -31,6 +31,7 @@ steps:
     timeoutInSeconds: 600
     command: |
       echo "Building the application with Maven..."
+      cd MtdrSpring/backend  
       mvn clean package spring-boot:repackage
       if [ $? -ne 0 ]; then
         echo "Maven build failed!"
@@ -44,7 +45,7 @@ steps:
     timeoutInSeconds: 600
     command: |
       echo "Building Docker image..."
-      docker build -f Dockerfile -t $IMAGE .
+      docker build -f MtdrSpring/backend/Dockerfile -t $IMAGE MtdrSpring/backend
       if [ $? -ne 0 ]; then
         echo "Docker build failed!"
         exit 1
