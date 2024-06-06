@@ -8,6 +8,7 @@ env:
   variables:
     IMAGE_NAME: "todolistapp-springboot"
     IMAGE_VERSION: "0.1"
+    DOCKER_REGISTRY: "mx-queretaro-1.ocir.io/axs2pxpd649r/reacttodo/rkihw"  # Aquí defines tu registro de Docker
   exportedVariables:
     - IMAGE
 
@@ -18,14 +19,11 @@ steps:
     timeoutInSeconds: 300
     command: |
       if [ -z "$DOCKER_REGISTRY" ]; then
-        echo "DOCKER_REGISTRY not set. Will get it with state_get"
-        export DOCKER_REGISTRY=$(state_get DOCKER_REGISTRY)
-      fi
-      if [ -z "$DOCKER_REGISTRY" ]; then
-        echo "Error: DOCKER_REGISTRY env variable needs to be set!"
+        echo "DOCKER_REGISTRY not set. Exiting..."
         exit 1
       fi
       export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+      echo "Environment variables set: IMAGE=${IMAGE}"
 
   - type: Command
     name: Build Application
@@ -34,6 +32,11 @@ steps:
     command: |
       echo "Building the application with Maven..."
       mvn clean package spring-boot:repackage
+      if [ $? -ne 0 ]; then
+        echo "Maven build failed!"
+        exit 1
+      fi
+      echo "Maven build succeeded."
 
   - type: Command
     name: Build Docker Image
@@ -42,6 +45,11 @@ steps:
     command: |
       echo "Building Docker image..."
       docker build -f Dockerfile -t $IMAGE .
+      if [ $? -ne 0 ]; then
+        echo "Docker build failed!"
+        exit 1
+      fi
+      echo "Docker build succeeded."
 
   - type: Command
     name: Push Docker Image
@@ -50,21 +58,24 @@ steps:
     command: |
       echo "Pushing Docker image to registry..."
       docker push $IMAGE
-    onFailure:
-      - type: Command
-        shell: bash
-        command: |
-          echo "Failed to push Docker image."
+      if [ $? -ne 0 ]; then
+        echo "Docker push failed!"
+        exit 1
+      fi
+      echo "Docker push succeeded."
 
   - type: Command
     name: Clean Up Local Docker Image
     shell: bash
     timeoutInSeconds: 300
     command: |
-      if [ $? -eq 0 ]; then
-        echo "Removing local Docker image..."
-        docker rmi "$IMAGE"
+      echo "Cleaning up local Docker image..."
+      docker rmi "$IMAGE"
+      if [ $? -ne 0 ]; then
+        echo "Docker rmi failed!"
+        exit 1
       fi
+      echo "Local Docker image removed."
 
 outputArtifacts:
   - name: build-artifacts
