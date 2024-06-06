@@ -239,12 +239,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 
 	@Override
-	public String getBotUsername() {		
+	public String getBotUsername() {
 		return botName;
 	}
 
 	// GET /todolist
-	public List<ToDoItem> getAllToDoItems() { 
+	public List<ToDoItem> getAllToDoItems() {
 		return toDoItemService.findAll();
 	}
 

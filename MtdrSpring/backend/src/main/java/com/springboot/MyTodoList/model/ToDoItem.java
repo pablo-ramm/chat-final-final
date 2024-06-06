@@ -23,7 +23,7 @@ public class ToDoItem {
     public ToDoItem(){
 
     }
-    public ToDoItem(int ID, String description, OffsetDateTime creation_ts, boolean done) {
+        public ToDoItem(int ID, String description, OffsetDateTime creation_ts, boolean done) {
         this.ID = ID;
         this.description = description;
         this.creation_ts = creation_ts;
@@ -46,7 +46,7 @@ public class ToDoItem {
         this.description = description;
     }
 
-    public OffsetDateTime getCreation_ts() {
+        public OffsetDateTime getCreation_ts() {
         return creation_ts;
     }
 
