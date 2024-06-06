@@ -42,6 +42,7 @@ steps:
         exit 1
       fi
       echo "GraalVM installation succeeded."
+
   - type: Command
       name: Login to OCI Docker Registry
       shell: bash
@@ -54,6 +55,7 @@ steps:
           exit 1
         fi
         echo "Docker login succeeded."
+        
   - type: Command
     name: Build Application
     shell: bash
