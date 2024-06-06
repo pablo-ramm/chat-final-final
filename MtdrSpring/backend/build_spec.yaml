@@ -44,7 +44,7 @@ steps:
       echo "GraalVM installation succeeded."
 
   - type: Command
-      name: Login to OCI Docker Registry
+      name: Login
       shell: bash
       timeoutInSeconds: 300
       command: |
