@@ -112,7 +112,7 @@ steps:
 outputArtifacts:
   - name: build-artifacts
     type: BINARY
-    location: target/
+    location: MtdrSpring/backend/target/
 
   - name: docker-image
     type: DOCKER_IMAGE
