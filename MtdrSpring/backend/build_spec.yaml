@@ -42,20 +42,20 @@ steps:
         exit 1
       fi
       echo "GraalVM installation succeeded."
-
+  
   - type: Command
-      name: Login
-      shell: bash
-      timeoutInSeconds: 300
-      command: |
-        echo "Logging in to OCI Docker Registry..."
-        docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
-        if [ $? -ne 0 ]; then
-          echo "Docker login failed!"
-          exit 1
-        fi
-        echo "Docker login succeeded."
-
+    name: Login to OCI Docker Registry
+    shell: bash
+    timeoutInSeconds: 300
+    command: |
+      echo "Logging in to OCI Docker Registry..."
+      echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
+      if [ $? -ne 0 ]; then
+        echo "Docker login failed!"
+        exit 1
+      fi
+      echo "Docker login succeeded."
+  
   - type: Command
     name: Build Application
     shell: bash
