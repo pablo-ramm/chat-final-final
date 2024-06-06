@@ -74,8 +74,3 @@ outputArtifacts:
   - name: docker-image
     type: DOCKER_IMAGE
     location: ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
-
-inputArtifacts:
-  - name: source-code
-    type: GIT_REPOSITORY
-    location: ./
