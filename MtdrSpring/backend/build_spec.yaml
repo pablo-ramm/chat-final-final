@@ -67,6 +67,6 @@ steps:
 outputArtifacts:  
   - name: artifact_docker
     type: DOCKER_IMAGE
-    location: artifact_docker1
+    location: MtdrSpring/backend/artifact_docker1
 
 
