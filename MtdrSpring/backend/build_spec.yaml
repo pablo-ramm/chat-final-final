@@ -5,7 +5,7 @@ shell: bash
 
 env:
   variables:
-    DOCKER_REGISTRY: "qro.ocir.io/axs2pxpd649r/reacttodo/rkihw"
+    DOCKER_REGISTRY: "qro.ocir.io/axs2pxpd649r"
     DOCKER_USERNAME: "axs2pxpd649r/prm-123@hotmail.com"
     DOCKER_PASSWORD: "7srs5zmwRFMBj]>VBrnL"
     JAVA_HOME: /usr/lib64/graalvm/graalvm22-ee-java17
@@ -64,7 +64,7 @@ steps:
     name: "List Docker Images"
     command: docker images
 
-outputArtifacts:
+outputArtifacts:  
   - name: artifact_docker
     type: DOCKER_IMAGE
     location: artifact_docker1
