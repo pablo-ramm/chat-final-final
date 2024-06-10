@@ -76,7 +76,7 @@ steps:
     timeoutInSeconds: 600
     command: |
       echo "Building Docker image..."
-      docker build -f MtdrSpring/backend/Dockerfile -t $IMAGE --platform=linux/arm64
+      docker build -f MtdrSpring/backend/Dockerfile -t $IMAGE MtdrSpring/backend --platform=linux/arm64
       if [ $? -ne 0 ]; then
         echo "Docker build failed!"
         exit 1
@@ -99,4 +99,4 @@ steps:
 outputArtifacts:
   - name: artifact_docker
     type: DOCKER_IMAGE
-    location: ${DOCKER_REGISTRY}/MtdrSpring/backend/${IMAGE_NAME}:${IMAGE_VERSION}
+    location: ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
