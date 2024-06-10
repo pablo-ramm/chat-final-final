@@ -1,61 +1,26 @@
-version: 0.1
+version: 0.1 
 component: build
-timeoutInSeconds: 10000
+timeoutInSeconds: 100
 shell: bash
-failImmediatelyOnError: true
 
 env:
   variables:
-    IMAGE_NAME: "todolistapp-springboot"
-    IMAGE_VERSION: "0.1"
-    DOCKER_REGISTRY: "mx-queretaro-1.ocir.io/axs2pxpd649r/reacttodo/rkihw"
-    JAVA_HOME: "/usr/lib64/graalvm/graalvm22-ee-java17"
     DOCKER_USERNAME: "axs2pxpd649r/prm-123@hotmail.com"
     DOCKER_PASSWORD: "7srs5zmwRFMBj]>VBrnL"
+    JAVA_HOME: /usr/lib64/graalvm/graalvm22-ee-java17
+
   exportedVariables:
-    - IMAGE
+    - BuildServiceDemoVersion
 
 steps:
   - type: Command
-    name: Set Environment Variables
-    shell: bash
-    timeoutInSeconds: 300
-    command: |
-      if [ -z "$DOCKER_REGISTRY" ]; then
-        echo "DOCKER_REGISTRY not set. Exiting..."
-        exit 1
-      fi
-      export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
-      echo "Environment variables set: IMAGE=${IMAGE}"
-      export PATH=$JAVA_HOME/bin:$PATH
-      echo "PATH set to: $PATH"
+    name: "Install GraalVM Enterprise 22.x Native Image for Java17"
+    command: yum -y install graalvm22-ee-17-native-image
 
   - type: Command
-    name: Install GraalVM Enterprise 22.x Native Image for Java17
-    shell: bash
-    timeoutInSeconds: 600
-    command: |
-      echo "Installing GraalVM Enterprise..."
-      yum -y install graalvm22-ee-17-native-image
-      if [ $? -ne 0 ]; then
-        echo "GraalVM installation failed!"
-        exit 1
-      fi
-      echo "GraalVM installation succeeded."
-  
-  - type: Command
-    name: Login to OCI Docker Registry
-    shell: bash
-    timeoutInSeconds: 300
-    command: |
-      echo "Logging in to OCI Docker Registry..."
-      echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
-      if [ $? -ne 0 ]; then
-        echo "Docker login failed!"
-        exit 1
-      fi
-      echo "Docker login succeeded."
-  
+    name: "Set PATH Variable"
+    command: export PATH=$JAVA_HOME/bin:$PATH
+
   - type: Command
     name: Build Application
     shell: bash
@@ -71,32 +36,36 @@ steps:
       echo "Maven build succeeded."
 
   - type: Command
-    name: Build Docker Image
-    shell: bash
-    timeoutInSeconds: 600
-    command: |
-      echo "Building Docker image..."
-      docker build -f MtdrSpring/backend/Dockerfile -t $IMAGE MtdrSpring/backend --platform=linux/arm64
-      if [ $? -ne 0 ]; then
-        echo "Docker build failed!"
-        exit 1
-      fi
-      echo "Docker build succeeded."
+    name: check
+    command: ls -la target/
 
   - type: Command
-    name: Push Docker Image
+    name: Login to OCI Docker Registry
     shell: bash
-    timeoutInSeconds: 600
+    timeoutInSeconds: 300
     command: |
-      echo "Pushing Docker image to registry..."
-      docker push $IMAGE
+      echo "Logging in to OCI Docker Registry..."
+      echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
       if [ $? -ne 0 ]; then
-        echo "Docker push failed!"
+        echo "Docker login failed!"
         exit 1
       fi
-      echo "Docker push succeeded."
+      echo "Docker login succeeded."
+
+  - type: Command
+    name: Dockerize
+    command: |
+      BuildServiceDemoVersion=`echo ${OCI_BUILD_RUN_ID} | rev | cut -c 1-7`
+      echo $BuildServiceDemoVersion
+      docker build -f MtdrSpring/backend/Dockerfile -t artifact_docker --platform=linux/arm64 .
+
+  - type: Command
+    name: "List Docker Images"
+    command: docker images
 
 outputArtifacts:
   - name: artifact_docker
     type: DOCKER_IMAGE
-    location: $IMAGE
+    location: artifact_docker
+
+
