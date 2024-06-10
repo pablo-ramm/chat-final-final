@@ -5,6 +5,7 @@ shell: bash
 
 env:
   variables:
+    DOCKER_REGISTRY: "mx-queretaro-1.ocir.io/axs2pxpd649r/reacttodo/rkihw"
     DOCKER_USERNAME: "axs2pxpd649r/prm-123@hotmail.com"
     DOCKER_PASSWORD: "7srs5zmwRFMBj]>VBrnL"
     JAVA_HOME: /usr/lib64/graalvm/graalvm22-ee-java17
