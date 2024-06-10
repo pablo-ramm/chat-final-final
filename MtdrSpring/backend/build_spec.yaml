@@ -8,7 +8,7 @@ env:
   variables:
     IMAGE_NAME: "todolistapp-springboot"
     IMAGE_VERSION: "0.1"
-    DOCKER_REGISTRY: "qro.ocir.io/axs2pxpd649r"
+    DOCKER_REGISTRY: "qro.ocir.io/axs2pxpd649r/reacttodo/rkihw"
     JAVA_HOME: "/usr/lib64/graalvm/graalvm22-ee-java17"
     DOCKER_USERNAME: "axs2pxpd649r/prm-123@hotmail.com"
     DOCKER_PASSWORD: "7srs5zmwRFMBj]>VBrnL"
