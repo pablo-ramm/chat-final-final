@@ -37,7 +37,7 @@ steps:
 
   - type: Command
     name: check
-    command: ls -la target/
+    command: ls -la MtdrSpring/backend/target/
 
   - type: Command
     name: Login to OCI Docker Registry
