@@ -97,10 +97,6 @@ steps:
       echo "Docker push succeeded."
 
 outputArtifacts:
-  - name: build-artifacts
-    type: BINARY
-    location: MtdrSpring/backend/target/
-
-  - name: docker-image
+  - name: artifact_docker
     type: DOCKER_IMAGE
-    location: ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+    location: MtdrSpring/backend/${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
