@@ -99,4 +99,4 @@ steps:
 outputArtifacts:
   - name: artifact_docker
     type: DOCKER_IMAGE
-    location: ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+    location: $IMAGE
