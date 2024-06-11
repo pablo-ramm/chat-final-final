@@ -30,14 +30,14 @@ steps:
         echo "Borrando el deployment todolistapp-springboot-deployment..."
         ~/.local/bin/kubectl -n mtdrworkshop delete deployment todolistapp-springboot-deployment
       else
-        echo "El deployment todolistapp-springboot-deployment no existe o no está corriendo"
+        echo "El deployment todolistapp-springboot-deployment no existe o no esta corriendo"
       fi
 
       if ~/.local/bin/kubectl -n mtdrworkshop get service todolistapp-springboot-service > /dev/null 2>&1; then
         echo "Borrando el service todolistapp-springboot-service..."
         ~/.local/bin/kubectl -n mtdrworkshop delete service todolistapp-springboot-service
       else
-        echo "El service todolistapp-springboot-service no existe o no está corriendo"
+        echo "El service todolistapp-springboot-service no existe o no esta corriendo"
       fi
       
       echo "Proceso de eliminación completado"
