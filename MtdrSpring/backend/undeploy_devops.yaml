@@ -7,18 +7,37 @@ steps:
   - type: Command
     name: Download kubectl
     command: |
-      curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      set -e
+      KUBECTL_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      curl -LO "$KUBECTL_URL"
       chmod +x kubectl
       mkdir -p ~/.local/bin
       mv ./kubectl ~/.local/bin/kubectl
       export PATH=$PATH:~/.local/bin
-  
+      echo "kubectl descargado y movido a ~/.local/bin"
+
   - type: Command
-    name: Create Kubecofig and Undeploy pods
+    name: Create Kubeconfig and Undeploy pods
     command: |
+      set -e
       mkdir -p ~/.kube
-      oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.mx-queretaro-1.aaaaaaaat6zl4xaxbberx5abgwswk7bwhtu4fdzoqddtj5wdpcx5lpuumpsa --file $HOME/.kube/config --region mx-queretaro-1 --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT
-      oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.mx-queretaro-1.aaaaaaaat6zl4xaxbberx5abgwswk7bwhtu4fdzoqddtj5wdpcx5lpuumpsa --file $HOME/.kube/config --region mx-queretaro-1 --token-version 2.0.0  --kube-endpoint PRIVATE_ENDPOINT
-      echo delete frontend deployment and service...
-      ~/.local/bin/kubectl -n mtdrworkshop delete deployment todolistapp-springboot-deployment
-      ~/.local/bin/kubectl -n mtdrworkshop delete service todolistapp-springboot-service
+      oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.mx-queretaro-1.aaaaaaaat6zl4xaxbberx5abgwswk7bwhtu4fdzoqddtj5wdpcx5lpuumpsa --file $HOME/.kube/config --region mx-queretaro-1 --token-version 2.0.0 --kube-endpoint PUBLIC_ENDPOINT
+      oci ce cluster create-kubeconfig --cluster-id ocid1.cluster.oc1.mx-queretaro-1.aaaaaaaat6zl4xaxbberx5abgwswk7bwhtu4fdzoqddtj5wdpcx5lpuumpsa --file $HOME/.kube/config --region mx-queretaro-1 --token-version 2.0.0 --kube-endpoint PRIVATE_ENDPOINT
+      echo "Kubeconfig creado"
+
+      echo "Verificando si el deployment y el service existen..."
+      if ~/.local/bin/kubectl -n mtdrworkshop get deployment todolistapp-springboot-deployment > /dev/null 2>&1; then
+        echo "Borrando el deployment todolistapp-springboot-deployment..."
+        ~/.local/bin/kubectl -n mtdrworkshop delete deployment todolistapp-springboot-deployment
+      else
+        echo "El deployment todolistapp-springboot-deployment no existe o no está corriendo"
+      fi
+
+      if ~/.local/bin/kubectl -n mtdrworkshop get service todolistapp-springboot-service > /dev/null 2>&1; then
+        echo "Borrando el service todolistapp-springboot-service..."
+        ~/.local/bin/kubectl -n mtdrworkshop delete service todolistapp-springboot-service
+      else
+        echo "El service todolistapp-springboot-service no existe o no está corriendo"
+      fi
+      
+      echo "Proceso de eliminación completado"
