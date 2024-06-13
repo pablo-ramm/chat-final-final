@@ -34,7 +34,7 @@ steps:
     timeoutInSeconds: 600
     command: |
       echo "Building Docker image..."
-      docker build -f MtdrSpring/Pruebas/Dockerfile -t pruebas MtdrSpring/Pruebas --platform=linux/arm64
+      docker build -f MtdrSpring/Pruebas/Dockerfile -t pruebas MtdrSpring/Pruebas
       if [ $? -ne 0 ]; then
         echo "Docker build failed!"
         exit 1
