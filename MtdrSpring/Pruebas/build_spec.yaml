@@ -46,7 +46,7 @@ steps:
     timeoutInSeconds: 600
     command: |
       echo "Building Docker image..."
-      docker build -f MtdrSpring/Pruebas/Dockerfile -t pruebas MtdrSpring/Pruebas
+      docker build -f MtdrSpring/Pruebas/Dockerfile -t $IMAGE MtdrSpring/Pruebas
       docker logs pruebas
       if [ $? -ne 0 ]; then
         echo "Docker build failed!"
@@ -60,7 +60,7 @@ steps:
     timeoutInSeconds: 600
     command: |
       echo "Pushing Docker image to registry..."
-      docker push pruebas
+      docker push $IMAGE
       if [ $? -ne 0 ]; then
         echo "Docker push failed!"
         exit 1
