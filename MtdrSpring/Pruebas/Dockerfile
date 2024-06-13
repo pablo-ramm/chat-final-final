@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Instalar las dependencias
-RUN pip install --no-cache-dir telethon
+RUN pip install telethon
 
 # Comando para ejecutar la aplicación
 CMD ["python", "pruebas.py"]
