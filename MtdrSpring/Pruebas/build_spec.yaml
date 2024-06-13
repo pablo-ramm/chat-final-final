@@ -1,0 +1,57 @@
+version: 0.1
+component: build
+timeoutInSeconds: 10000
+shell: bash
+failImmediatelyOnError: true
+
+env:
+  variables:
+    IMAGE_NAME: "todolistapp-springboot"
+    IMAGE_VERSION: "0.1"
+    DOCKER_REGISTRY: "qro.ocir.io/axs2pxpd649r/reacttodo/rkihw"
+    JAVA_HOME: "/usr/lib64/graalvm/graalvm22-ee-java17"
+    DOCKER_USERNAME: "axs2pxpd649r/prm-123@hotmail.com"
+    DOCKER_PASSWORD: "7srs5zmwRFMBj]>VBrnL"
+
+
+steps:  
+  - type: Command
+    name: Login to OCI Docker Registry
+    shell: bash
+    timeoutInSeconds: 300
+    command: |
+      echo "Logging in to OCI Docker Registry..."
+      echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
+      if [ $? -ne 0 ]; then
+        echo "Docker login failed!"
+        exit 1
+      fi
+      echo "Docker login succeeded."
+
+  - type: Command
+    name: Build Docker Image
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Building Docker image..."
+      docker build -f MtdrSpring/Pruebas/Dockerfile -t pruebas MtdrSpring/Pruebas --platform=linux/arm64
+      if [ $? -ne 0 ]; then
+        echo "Docker build failed!"
+        exit 1
+      fi
+      echo "Docker build succeeded."
+
+  - type: Command
+    name: Push Docker Image
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Pushing Docker image to registry..."
+      docker push pruebas
+      if [ $? -ne 0 ]; then
+        echo "Docker push failed!"
+        exit 1
+      fi
+      echo "Docker push succeeded."
+
+
