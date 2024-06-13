@@ -38,6 +38,9 @@ public class MyTodoListApplication implements CommandLineRunner {
 	@Value("${telegram.bot.name}")
 	private String botName;
 
+	private BotController botControllerInstance; // Instance variable for BotController
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(MyTodoListApplication.class, args);
 	}
@@ -47,7 +50,11 @@ public class MyTodoListApplication implements CommandLineRunner {
 		try {
 			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 			//telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, toDoItemService));
-			telegramBotsApi.registerBot(new BotController(telegramBotToken, botName, tareaService,usuarioService));
+			//telegramBotsApi.registerBot(new BotController(telegramBotToken, botName, tareaService,usuarioService));
+			// Using Singleton pattern to get instance of BotController
+			botControllerInstance = BotController.getInstance(telegramBotToken, botName, tareaService, usuarioService);
+			telegramBotsApi.registerBot(botControllerInstance);
+
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();

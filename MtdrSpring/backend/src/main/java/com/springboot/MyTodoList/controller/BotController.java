@@ -51,6 +51,7 @@ public class BotController extends TelegramLongPollingBot {
     private UsuarioService usuarioService;
     private String typeUser;
     private long currentUserID;
+    private static BotController instance;
 
     private TaskCreationState currentState = TaskCreationState.START;
 
@@ -64,6 +65,15 @@ public class BotController extends TelegramLongPollingBot {
         this.typeUser = "";
         this.currentUserID = 0;
     }
+
+    // Método estático para obtener la instancia única del bot
+    public static synchronized BotController getInstance(String botToken, String botName, TareaService tareaService, UsuarioService usuarioService) {
+        if (instance == null) {
+            instance = new BotController(botToken, botName, tareaService, usuarioService);
+        }
+        return instance;
+    }
+
     @Override
     public void onUpdateReceived(Update update) {
         long user_id = update.getMessage().getChat().getId();
