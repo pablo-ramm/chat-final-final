@@ -6,7 +6,7 @@ failImmediatelyOnError: true
 
 env:
   variables:
-    IMAGE_NAME: "pruebas-telegram"
+    IMAGE_NAME: "telegram-test"
     IMAGE_VERSION: "0.1"
     DOCKER_REGISTRY: "qro.ocir.io/axs2pxpd649r/reacttodo/rkihw"
     JAVA_HOME: "/usr/lib64/graalvm/graalvm22-ee-java17"
@@ -15,8 +15,8 @@ env:
   exportedVariables:
     - IMAGE
 
-steps:  
-- type: Command
+steps:
+  - type: Command
     name: Set Environment Variables
     shell: bash
     timeoutInSeconds: 300
