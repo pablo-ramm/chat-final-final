@@ -6,15 +6,27 @@ failImmediatelyOnError: true
 
 env:
   variables:
-    IMAGE_NAME: "todolistapp-springboot"
+    IMAGE_NAME: "pruebas-telegram"
     IMAGE_VERSION: "0.1"
     DOCKER_REGISTRY: "qro.ocir.io/axs2pxpd649r/reacttodo/rkihw"
     JAVA_HOME: "/usr/lib64/graalvm/graalvm22-ee-java17"
     DOCKER_USERNAME: "axs2pxpd649r/prm-123@hotmail.com"
     DOCKER_PASSWORD: "7srs5zmwRFMBj]>VBrnL"
-
+  exportedVariables:
+    - IMAGE
 
 steps:  
+- type: Command
+    name: Set Environment Variables
+    shell: bash
+    timeoutInSeconds: 300
+    command: |
+      if [ -z "$DOCKER_REGISTRY" ]; then
+        echo "DOCKER_REGISTRY not set. Exiting..."
+        exit 1
+      fi
+      export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}"
+
   - type: Command
     name: Login to OCI Docker Registry
     shell: bash
