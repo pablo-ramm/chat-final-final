@@ -35,6 +35,7 @@ steps:
     command: |
       echo "Building Docker image..."
       docker build -f MtdrSpring/Pruebas/Dockerfile -t pruebas MtdrSpring/Pruebas
+      docker logs pruebas
       if [ $? -ne 0 ]; then
         echo "Docker build failed!"
         exit 1
