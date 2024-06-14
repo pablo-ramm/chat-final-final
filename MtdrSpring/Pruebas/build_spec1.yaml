@@ -31,32 +31,57 @@ steps:
       echo "PATH set to: $PATH"
 
   - type: Command
-    name: installing framework
+    name: Login to OCI Docker Registry
     shell: bash
-    timeoutInSeconds: 600
+    timeoutInSeconds: 300
     command: |
-      echo "Compiling and building application..."
-      cd MtdrSpring/Pruebas
-      pip install telethon
+      echo "Logging in to OCI Docker Registry..."
+      echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
       if [ $? -ne 0 ]; then
-        echo "Build failed!"
+        echo "Docker login failed!"
         exit 1
       fi
-      echo "Build succeeded."
+      echo "Docker login succeeded."
 
   - type: Command
-    name: Run Application and Log Test Results
+    name: Build Docker Image
     shell: bash
     timeoutInSeconds: 600
     command: |
-      echo "Running application and logging test results..."
-      cd MtdrSpring/Pruebas
-      python pruebas.py 
-
+      echo "Building Docker image..."
+      docker build -f MtdrSpring/Pruebas/Dockerfile -t $IMAGE MtdrSpring/Pruebas
       if [ $? -ne 0 ]; then
-        echo "Application run failed!"
+        echo "Docker build failed!"
         exit 1
       fi
-      echo "Application run succeeded."
+      echo "Docker build succeeded."
+  - type: Command
+    name: Push Docker Image
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Pushing Docker image to registry..."
+      docker push $IMAGE
+      if [ $? -ne 0 ]; then
+        echo "Docker push failed!"
+        exit 1
+      fi
+      echo "Docker push succeeded."
 
-  
+  - type: Command
+    name: Log Test Results
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      cd MtdrSpring/Pruebas
+      echo "Loging Test results..."
+      docker ps
+      docker run $IMAGE
+      if [ $? -ne 0 ]; then
+        echo "Docker logs failed!"
+        exit 1
+      fi
+      echo "Docker logs succeeded."
+
+
+
