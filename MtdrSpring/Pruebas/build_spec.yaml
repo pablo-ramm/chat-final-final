@@ -59,7 +59,7 @@ steps:
       echo "Build succeeded."
 
   - type: Command
-    name: Run Application and Log Test Results
+    name: Log Login Test Results
     shell: bash
     timeoutInSeconds: 600
     command: |
@@ -72,3 +72,33 @@ steps:
         exit 1
       fi
       echo "Application run succeeded."
+
+  - type: Command
+    name: Log Developer Test Results
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Running application and logging test results..."
+      cd MtdrSpring/Pruebas
+      python3 prueba_start_desarrollador.py 
+
+      if [ $? -ne 0 ]; then
+        echo "Log Developer Test Results failed!"
+        exit 1
+      fi
+      echo "Log Developer Test Results succeeded."
+  
+  - type: Command
+    name: Log Developer Test Results
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Running application and logging test results..."
+      cd MtdrSpring/Pruebas
+      python3 prueba_start_desarrollador.py 
+
+      if [ $? -ne 0 ]; then
+        echo "Log Developer Test Results failed!"
+        exit 1
+      fi
+      echo "Log Developer Test Results succeeded."

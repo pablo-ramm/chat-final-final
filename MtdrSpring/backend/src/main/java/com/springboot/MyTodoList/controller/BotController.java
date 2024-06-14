@@ -285,7 +285,7 @@ public class BotController extends TelegramLongPollingBot {
                     sendMessage("La tarea tiene nombre:" + taskName + " ", chatId);
                     tareaToBeConstructed.setNombre(taskName);
                     // Solicitar la descripción de la tarea
-                    sendMessage("Por favor, ingresa la descripción de la tarea:", chatId);
+                    sendMessage("Por favor, ingresa la descripcion de la tarea:", chatId);
                     break;
                 case CAPTURING_DESCRIPTION:
                     // Manejar la captura de la descripción de la tarea

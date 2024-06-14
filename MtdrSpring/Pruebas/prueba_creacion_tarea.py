@@ -43,7 +43,7 @@ async def main():
         
         response = await conv.get_response()
 
-        if "Por favor, ingresa la descripción de la tarea" in response.text:
+        if "Por favor, ingresa la descripcion de la tarea" in response.text:
             print("Mensaje recibido exitosamente")
 
         await conv.send_message('Tarea para prueba de creacion de tarea')
