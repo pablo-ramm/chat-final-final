@@ -36,12 +36,12 @@ steps:
     timeoutInSeconds: 600
     command: |
       echo "Installing dependencies..."
-      apt-get update -y
-      apt-get install -y make build-essential libssl-dev zlib1g-dev \
-      libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
-      libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev \
-      liblzma-dev python-openssl git
-      
+      yum update -y
+      yum groupinstall -y "Development Tools"
+      yum install -y openssl-devel bzip2-devel libffi-devel \
+      zlib-devel readline-devel sqlite-devel wget curl llvm \
+      ncurses-devel tk-devel xz-devel lzma-sdk-devel git
+
       echo "Installing pyenv..."
       curl https://pyenv.run | bash
       export PATH="$HOME/.pyenv/bin:$PATH"
@@ -57,7 +57,7 @@ steps:
       python --version
 
   - type: Command
-    name: installing framework
+    name: Install Framework
     shell: bash
     timeoutInSeconds: 600
     command: |
