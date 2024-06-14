@@ -50,12 +50,24 @@ steps:
     command: |
       echo "Building Docker image..."
       docker build -f MtdrSpring/Pruebas/Dockerfile -t $IMAGE MtdrSpring/Pruebas
-      docker logs $IMAGE
       if [ $? -ne 0 ]; then
         echo "Docker build failed!"
         exit 1
       fi
       echo "Docker build succeeded."
+  
+  - type: Command
+    name: Log Test Results
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Building Docker image..."
+      docker logs $IMAGE
+      if [ $? -ne 0 ]; then
+        echo "Docker logs failed!"
+        exit 1
+      fi
+      echo "Docker logs succeeded."
 
   - type: Command
     name: Push Docker Image
