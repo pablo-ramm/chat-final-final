@@ -24,7 +24,7 @@ async def main():
         else:
             print("Test Failed: Incorrect response.")
             sys.exit("El test ha fallado. Saliendo del programa.")
-
+        await client.disconnect()
 
     await client.run_until_disconnected()
 

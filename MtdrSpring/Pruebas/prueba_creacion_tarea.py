@@ -77,6 +77,7 @@ async def main():
         response = await conv.get_response()
         if "La tarea ha sido creada exitosamente!" in response.text:
             print("Prueba: creacion de tarea paso exitosamente")
+        await client.disconnect()
 
     await client.run_until_disconnected()
 
