@@ -25,7 +25,10 @@ steps:
         echo "DOCKER_REGISTRY not set. Exiting..."
         exit 1
       fi
-      export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}"
+      export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+      echo "Environment variables set: IMAGE=${IMAGE}"
+      export PATH=$JAVA_HOME/bin:$PATH
+      echo "PATH set to: $PATH"
 
   - type: Command
     name: Login to OCI Docker Registry
