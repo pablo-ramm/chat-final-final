@@ -37,10 +37,6 @@ steps:
     command: |
       echo "Installing dependencies..."
       yum update -y
-      yum groupinstall -y "Development Tools"
-      yum install -y openssl-devel bzip2-devel libffi-devel \
-      zlib-devel readline-devel sqlite-devel wget curl llvm \
-      ncurses-devel tk-devel xz-devel lzma-sdk-devel git
 
       echo "Installing Python 3.9..."
       yum install -y python3
