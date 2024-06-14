@@ -76,6 +76,7 @@ steps:
       cd MtdrSpring/Pruebas
       echo "Loging Test results..."
       docker ps
+      docker run $IMAGE
       docker logs $IMAGE
       if [ $? -ne 0 ]; then
         echo "Docker logs failed!"
