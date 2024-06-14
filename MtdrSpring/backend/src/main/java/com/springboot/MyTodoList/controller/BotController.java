@@ -346,7 +346,7 @@ public class BotController extends TelegramLongPollingBot {
 
                     tareaToBeConstructed.setDefaultValues();
                     currentState = TaskCreationState.START;
-                    sendMessage("¡La tarea ha sido creada exitosamente!", chatId);
+                    sendMessage("La tarea ha sido creada exitosamente!", chatId);
                     break;
                 case FINISHED:
 
