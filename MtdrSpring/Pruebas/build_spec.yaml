@@ -55,14 +55,27 @@ steps:
         exit 1
       fi
       echo "Docker build succeeded."
-  
+  - type: Command
+    name: Push Docker Image
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Pushing Docker image to registry..."
+      docker push $IMAGE
+      if [ $? -ne 0 ]; then
+        echo "Docker push failed!"
+        exit 1
+      fi
+      echo "Docker push succeeded."
+
   - type: Command
     name: Log Test Results
     shell: bash
     timeoutInSeconds: 600
     command: |
-      echo "Building Docker image..."
-      docker logs $IMAGE_NAME
+      cd MtdrSpring/Pruebas
+      echo "Loging Test results..."
+      docker logs $IMAGE
       if [ $? -ne 0 ]; then
         echo "Docker logs failed!"
         exit 1
