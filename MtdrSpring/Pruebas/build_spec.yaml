@@ -31,13 +31,38 @@ steps:
       echo "PATH set to: $PATH"
 
   - type: Command
+    name: Install Python 3.9 using pyenv
+    shell: bash
+    timeoutInSeconds: 600
+    command: |
+      echo "Installing dependencies..."
+      sudo apt-get update -y
+      sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
+      libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+      libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev \
+      liblzma-dev python-openssl git
+      
+      echo "Installing pyenv..."
+      curl https://pyenv.run | bash
+      export PATH="$HOME/.pyenv/bin:$PATH"
+      eval "$(pyenv init --path)"
+      eval "$(pyenv init -)"
+      eval "$(pyenv virtualenv-init -)"
+
+      echo "Installing Python 3.9.7..."
+      pyenv install 3.9.7
+      pyenv global 3.9.7
+
+      echo "Verifying Python version..."
+      python --version
+
+  - type: Command
     name: installing framework
     shell: bash
     timeoutInSeconds: 600
     command: |
       echo "Compiling and building application..."
       cd MtdrSpring/Pruebas
-      python --version
       pip install telethon
       if [ $? -ne 0 ]; then
         echo "Build failed!"
@@ -59,5 +84,3 @@ steps:
         exit 1
       fi
       echo "Application run succeeded."
-
-  
