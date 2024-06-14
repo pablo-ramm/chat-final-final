@@ -89,16 +89,16 @@ steps:
       echo "Log Developer Test Results succeeded."
   
   - type: Command
-    name: Log Developer Test Results
+    name: Log Task Creation Test Results
     shell: bash
     timeoutInSeconds: 600
     command: |
       echo "Running application and logging test results..."
       cd MtdrSpring/Pruebas
-      python3 prueba_start_desarrollador.py 
+      python3 prueba_creacion_tarea.py 
 
       if [ $? -ne 0 ]; then
-        echo "Log Developer Test Results failed!"
+        echo "Log Task Creation Test Results failed!"
         exit 1
       fi
-      echo "Log Developer Test Results succeeded."
+      echo "Log Task Creation Test Results succeeded."
