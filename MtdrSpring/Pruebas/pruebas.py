@@ -6,13 +6,13 @@ api_hash = 'cd3623b8696d688dcb41cf1a9e1c87a7'
 phone_number = '+528443834642'
 chat_id = -4245707425
 
-# Nombre de la sesión para guardar
+# Nombre de la sesin para guardar
 session_name = 'my_session'
 
-# Crear el cliente de Telegram con la sesión persistente
+# Crear el cliente de Telegram con la sesin persistente
 client = TelegramClient(session_name, api_id, api_hash)
 
-# Función principal para enviar el mensaje y escuchar la respuesta
+# Funcin principal para enviar el mensaje y escuchar la respuesta
 async def main():
     await client.start(phone=phone_number)
 
@@ -28,13 +28,13 @@ async def main():
         else:
             print("Test Failed: Incorrect response.")
 
-        # Desconectar después de recibir la respuesta
+        # Desconectar despus de recibir la respuesta
         await client.disconnect()
 
     # Esperar un tiempo suficiente para recibir la respuesta
     await client.run_until_disconnected()
 
-# Ejecutar el bucle principal de manera sincrónica
+# Ejecutar el bucle principal de manera sincrnica
 with client:
     client.loop.run_until_complete(main())
 
