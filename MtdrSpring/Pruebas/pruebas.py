@@ -20,6 +20,7 @@ async def main():
         print(f'Received message: {event.text}')
         if "No eres un usuario autorizador para esta aplicacion" in event.text:
             print("Test Passed: Correct response received.")
+            sys.exit("El test ha existoso. Saliendo del programa.")
         else:
             print("Test Failed: Incorrect response.")
             sys.exit("El test ha fallado. Saliendo del programa.")
