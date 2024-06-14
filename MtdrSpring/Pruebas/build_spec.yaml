@@ -37,6 +37,7 @@ steps:
     command: |
       echo "Compiling and building application..."
       cd MtdrSpring/Pruebas
+      python --version
       pip install telethon
       if [ $? -ne 0 ]; then
         echo "Build failed!"
