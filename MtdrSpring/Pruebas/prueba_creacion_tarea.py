@@ -78,6 +78,7 @@ async def main():
         if "La tarea ha sido creada exitosamente!" in response.text:
             print("Prueba: creacion de tarea paso exitosamente")
         await client.disconnect()
+        return
 
     await client.run_until_disconnected()
 

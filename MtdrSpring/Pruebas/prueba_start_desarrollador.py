@@ -21,11 +21,12 @@ async def main():
 
         if "Hola este es un bot para tus tareas y tu rol es: Desarrollador" in response.text:
             print("Bot respondio correctamente al comando /start")
+            await client.disconnect()
+            return
         else:
             print("Test Failed: Incorrect response.")
             sys.exit("El test ha fallado. Saliendo del programa.")
-        await client.disconnect()
-
+        
     await client.run_until_disconnected()
 
 with client:
